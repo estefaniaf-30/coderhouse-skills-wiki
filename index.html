@@ -185,6 +185,18 @@ body {
   padding-top: 10px; margin-top: 10px;
   border-top: 1px solid #f0f0f0;
 }
+.skill-id-row {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 8px; padding-top: 8px;
+  border-top: 1px dashed #ebebeb;
+}
+.skill-id-label { font-size: 10px; color: #ccc; font-weight: 600; font-family: 'Courier New', monospace; }
+.skill-id {
+  font-size: 11px; font-family: 'Courier New', monospace;
+  color: #999; background: #f8f8f8;
+  padding: 2px 7px; border-radius: 4px;
+  border: 1px solid #ebebeb;
+}
 .cmd-label { font-size: 11px; color: #bbb; font-weight: 600; }
 .cmd-chip {
   background: #111; color: #00C85A;
@@ -392,7 +404,43 @@ body {
         </div>
       </div>
 
-      <div class="section-h2">🔌 Cómo instalar un plugin</div>
+      <div class="section-h2">🔌 Cómo instalar una skill o plugin desde Cowork</div>
+
+      <div class="step-block">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Abrí el panel de Customize</div>
+          <div class="step-desc">En la barra lateral de Cowork, hacé clic en el ícono de <strong>Customize</strong> (o el engranaje ⚙️). Esto abre el panel de configuración de tu sesión.</div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Buscá la skill o plugin</div>
+          <div class="step-desc">En el panel vas a ver una sección de <strong>Skills</strong> y otra de <strong>Plugins</strong>. Usá el buscador para encontrar lo que necesitás por nombre o por área.</div>
+          <div class="step-tip">💡 <strong>Tip:</strong> Podés buscar por nombre técnico (ej: <code>intercom-metricas</code>) o por área (ej: <code>CX</code>, <code>pagos</code>).</div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Activala con un clic</div>
+          <div class="step-desc">Hacé clic en la skill o plugin que querés activar. Si es un plugin, puede pedirte conectar una cuenta (Intercom, Slack, Google Drive, etc.) — Claude te guía en ese proceso.</div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Listo, ya podés usarla</div>
+          <div class="step-desc">Una vez activada, la skill aparece disponible en tu sesión. Solo escribile a Claude de forma natural y la va a detectar automáticamente.</div>
+          <div class="step-tip">💡 <strong>Tip:</strong> Si no sabés si ya tenés la skill activa, simplemente preguntale a Claude: "¿Qué skills tengo disponibles?"</div>
+        </div>
+      </div>
+
+      <div class="section-h2">🔌 Cómo instalar un plugin pidiéndoselo a Claude</div>
 
       <div class="step-block">
         <div class="step-num">1</div>
@@ -736,6 +784,7 @@ function buildCard(s) {
   const catBadge = `<span class="badge badge-${s.cat}">${catLabels[s.cat]||s.cat}</span>`;
   const triggers = s.triggers.map(t => `<span class="trigger-tag">"${t}"</span>`).join('');
   const cmd = s.cmd ? `<div class="cmd-row"><span class="cmd-label">Comando:</span><span class="cmd-chip">/${s.cmd}</span></div>` : '';
+  const skillName = `<div class="skill-id-row"><span class="skill-id-label">skill:</span><span class="skill-id">${s.skill}</span></div>`;
   return `
     <div class="card" data-cat="${s.cat}" data-origin="${s.origin}"
          data-search="${(s.name+' '+s.desc+' '+s.triggers.join(' ')+' '+s.skill).toLowerCase()}">
@@ -750,6 +799,7 @@ function buildCard(s) {
       <div class="section-label">Frases que la activan</div>
       <div class="triggers">${triggers}</div>
       ${cmd}
+      ${skillName}
     </div>`;
 }
 
