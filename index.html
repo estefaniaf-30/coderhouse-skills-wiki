@@ -358,9 +358,33 @@ body {
 <div class="page" id="page-plugins">
   <div class="page-inner">
     <div class="page-title">🔌 Plugins instalados</div>
-    <div class="page-subtitle">Los plugins son paquetes que extienden las capacidades de Claude. Cada plugin agrupa varias skills relacionadas. Estos son los que tenemos activos en Coderhouse.</div>
+    <div class="page-subtitle">Los plugins son paquetes que agrupan skills y configuraciones. Se instalan una vez y quedan disponibles en tu Cowork. Son distintos a los <strong>MCPs/conectores</strong> — estos últimos conectan Claude con herramientas externas (Slack, Drive, Intercom) y se configuran por separado en Settings.</div>
 
     <div class="plugin-grid" id="pluginGrid"></div>
+
+    <!-- QUÉ MÁS SE PUEDE SUMAR -->
+    <div style="margin-top:40px;">
+      <div class="page-title" style="font-size:17px;margin-bottom:6px;">➕ ¿Qué más se puede sumar?</div>
+      <div class="page-subtitle" style="margin-bottom:24px;">Herramientas que el equipo puede solicitar para conectar o instalar. La diferencia clave: los <strong>plugins</strong> traen skills nuevas; los <strong>MCPs/conectores</strong> dan acceso a una herramienta externa.</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+        <!-- MCPs disponibles -->
+        <div style="background:#fff;border-radius:14px;border:1.5px solid #e8e8e8;padding:22px;">
+          <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:4px;">🔗 MCPs / Conectores disponibles</div>
+          <div style="font-size:12px;color:#888;margin-bottom:16px;">Se configuran en <strong>Settings → Connections</strong>. Dan acceso a herramientas externas.</div>
+          <div id="mcpList"></div>
+        </div>
+
+        <!-- Plugins disponibles -->
+        <div style="background:#fff;border-radius:14px;border:1.5px solid #e8e8e8;padding:22px;">
+          <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:4px;">📦 Plugins disponibles para instalar</div>
+          <div style="font-size:12px;color:#888;margin-bottom:16px;">Se instalan desde <strong>Customize → Plugins</strong> o pidiéndoselo a Claude.</div>
+          <div id="availablePluginList"></div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 
@@ -564,21 +588,21 @@ Ejemplo: "Ayudame a crear una skill para buscar datos en nuestra BD"</div>
 
       <div class="glossary-card">
         <div class="glossary-term">Plugin</div>
-        <div class="glossary-en">extensión</div>
-        <div class="glossary-def">Un paquete que agrupa varias skills relacionadas, conectores a herramientas externas (MCPs) y configuraciones. Se instala una vez y queda disponible para toda la sesión.</div>
+        <div class="glossary-en">extensión de skills</div>
+        <div class="glossary-def">Un paquete que agrupa varias <strong>skills</strong> relacionadas y se instala en tu Cowork. Aporta nuevas capacidades de razonamiento y flujos de trabajo a Claude. <em>No es lo mismo que un MCP</em>: el plugin le enseña a Claude cómo hacer algo; el MCP le da acceso a una herramienta.</div>
         <div class="glossary-example">
           <strong>Ejemplo</strong>
-          El plugin "coderhouse-api" agrupa todas las skills de gestión: estudiantes, cohorts, pagos, catálogo, certificados.
+          El plugin "coderhouse-api" le enseña a Claude cómo gestionar estudiantes, cohorts, pagos y catálogo usando la API interna. Sin el plugin, Claude no sabe cómo hacer esas cosas.
         </div>
       </div>
 
       <div class="glossary-card">
-        <div class="glossary-term">MCP</div>
+        <div class="glossary-term">MCP / Conector</div>
         <div class="glossary-en">Model Context Protocol</div>
-        <div class="glossary-def">El protocolo estándar que permite a Claude conectarse con herramientas externas (Slack, Google Drive, Intercom, etc.) y ejecutar acciones reales en ellas.</div>
+        <div class="glossary-def">Un <strong>conector</strong> que da a Claude acceso directo a una herramienta externa: leer mensajes de Slack, buscar archivos en Drive, consultar tickets de Intercom. Se configura en <em>Settings → Connections</em> y requiere autenticación con esa herramienta. <em>No trae skills</em> — solo habilita el acceso.</div>
         <div class="glossary-example">
-          <strong>Ejemplo</strong>
-          El MCP de Intercom permite que Claude busque conversaciones, lea métricas y analice tickets directamente desde tu cuenta.
+          <strong>Ejemplos activos en Coderhouse</strong>
+          Slack (enviar mensajes, leer canales), Google Drive (leer/subir archivos), Intercom (buscar conversaciones, métricas). Estos NO son plugins — son conexiones a herramientas reales.
         </div>
       </div>
 
@@ -767,11 +791,28 @@ const plugins = [
     desc:"Plugin del equipo de CX. Incluye monitoreo de Intercom, alertas automáticas y análisis de tickets.",
     skills:["alertas-intercom","analisis-cx"] },
   { icon:"⚡", color:"#F5F5FF", name:"anthropic-skills", origin:"Anthropic",
-    desc:"Skills base incluidas por defecto en Claude. Documentos, planillas, presentaciones, PDFs y herramientas de configuración.",
+    desc:"Skills base incluidas por defecto en todo Cowork. Documentos (Word, Excel, PDF, PPT), tareas programadas, setup y todas las skills propias de Coderhouse que no son de un plugin específico.",
     skills:["docx","pdf","xlsx","pptx","skill-creator","schedule","setup-cowork","cancelaciones","devoluciones-coderhouse","intercom-metricas","intercom-convos","dashboard-academico","retencion-cx","metricas-vd","weekly-ratings-report","revision-diaria-cohorts"] },
-  { icon:"🔌", color:"#FFF8E8", name:"cowork-plugin-management", origin:"Anthropic",
-    desc:"Herramientas para crear y customizar plugins de Cowork para tu organización.",
+  { icon:"🛠️", color:"#FFF8E8", name:"cowork-plugin-management", origin:"Anthropic",
+    desc:"Herramientas para crear plugins nuevos desde cero y customizar los existentes para adaptarlos a los flujos de trabajo de Coderhouse.",
     skills:["create-cowork-plugin","cowork-plugin-customizer"] },
+];
+
+const mcps = [
+  { emoji:"💬", name:"Slack", desc:"Enviar mensajes, leer canales y threads, buscar conversaciones. Activo." },
+  { emoji:"📁", name:"Google Drive", desc:"Leer, buscar y subir archivos. Acceso a Sheets, Docs y carpetas compartidas. Activo." },
+  { emoji:"🎧", name:"Intercom", desc:"Buscar conversaciones, leer tickets, consultar datos de contactos. Activo." },
+  { emoji:"📓", name:"Notion", desc:"Leer y crear páginas en espacios de Notion. Disponible para conectar." },
+  { emoji:"🗂️", name:"Atlassian (Jira/Confluence)", desc:"Gestión de tickets, proyectos y documentación técnica. Disponible para conectar." },
+  { emoji:"📊", name:"Google Sheets (directo)", desc:"Lectura y escritura directa en planillas. Disponible para conectar." },
+  { emoji:"📅", name:"Google Calendar", desc:"Ver y crear eventos, gestionar agenda del equipo. Disponible para conectar." },
+  { emoji:"🔎", name:"Airtable", desc:"Consultar y actualizar bases de datos visuales. Disponible para conectar." },
+];
+
+const availablePlugins = [
+  { emoji:"🔌", name:"Zoom Plugin", desc:"Buscar reuniones, acceder a grabaciones y transcripciones. Útil para análisis de clases." },
+  { emoji:"📋", name:"HubSpot", desc:"Gestión de CRM, contactos y pipeline comercial." },
+  { emoji:"🤖", name:"Plugins propios del equipo", desc:"Cualquier área puede crear su propio plugin con sus skills específicas. Pedíselo a Claude con la skill 'Crear Plugin'." },
 ];
 
 // ── BUILD SKILLS ─────────────────────────────────────────────
@@ -791,90 +832,4 @@ function buildCard(s) {
       <div class="card-header">
         <span class="card-emoji">${s.emoji}</span>
         <div>
-          <div class="card-name">${s.name}</div>
-          <div class="badges">${originBadge}${catBadge}</div>
-        </div>
-      </div>
-      <div class="card-desc">${s.desc}</div>
-      <div class="section-label">Frases que la activan</div>
-      <div class="triggers">${triggers}</div>
-      ${cmd}
-      ${skillName}
-    </div>`;
-}
-
-const grid = document.getElementById('grid');
-grid.innerHTML = skills.map(buildCard).join('');
-document.getElementById('totalBadge').textContent = `${skills.length} skills`;
-
-// ── BUILD PLUGINS ─────────────────────────────────────────────
-const pluginGrid = document.getElementById('pluginGrid');
-pluginGrid.innerHTML = plugins.map(p => `
-  <div class="plugin-card">
-    <div class="plugin-header">
-      <div class="plugin-icon" style="background:${p.color}">${p.icon}</div>
-      <div>
-        <div class="plugin-name">${p.name}</div>
-        <div class="plugin-origin">por ${p.origin}</div>
-      </div>
-    </div>
-    <div class="plugin-desc">${p.desc}</div>
-    <div class="plugin-skills-label">Skills incluidas</div>
-    <div class="plugin-skills">${p.skills.map(s=>`<span class="skill-pill">${s}</span>`).join('')}</div>
-  </div>`).join('');
-
-// ── SEARCH + FILTER ───────────────────────────────────────────
-let activeFilter = 'all';
-let activeOrigin = 'all';
-
-function updateDisplay() {
-  const q = document.getElementById('searchInput').value.toLowerCase().trim();
-  const cards = grid.querySelectorAll('.card');
-  let visible = 0;
-  cards.forEach(card => {
-    const matchCat    = activeFilter === 'all' || card.dataset.cat === activeFilter;
-    const matchOrigin = activeOrigin === 'all' || card.dataset.origin === activeOrigin;
-    const matchSearch = !q || card.dataset.search.includes(q);
-    if (matchCat && matchOrigin && matchSearch) { card.classList.remove('hidden'); visible++; }
-    else card.classList.add('hidden');
-  });
-  const empty = grid.querySelector('.empty-state');
-  if (empty) empty.remove();
-  if (visible === 0) grid.insertAdjacentHTML('beforeend',`<div class="empty-state"><div class="empty-state-icon">🔎</div><div>Sin resultados para "<strong>${q||'filtro actual'}</strong>"</div></div>`);
-  document.getElementById('resultCount').textContent = `${visible} de ${skills.length}`;
-}
-
-document.getElementById('searchInput').addEventListener('input', updateDisplay);
-
-document.getElementById('filterRow').addEventListener('click', e => {
-  const btn = e.target.closest('.filter-btn');
-  if (!btn) return;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  activeFilter = btn.dataset.cat;
-  updateDisplay();
-});
-
-document.querySelectorAll('.toggle-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeOrigin = btn.dataset.origin;
-    updateDisplay();
-  });
-});
-
-// ── NAV TABS ──────────────────────────────────────────────────
-document.querySelectorAll('.nav-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('page-' + tab.dataset.page).classList.add('active');
-  });
-});
-
-updateDisplay();
-</script>
-</body>
-</html>
+          <div class="ca
