@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills & Plugins — Coderhouse</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f4f4f4;
+  color: #1a1a1a;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: #111;
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 3px solid #00C85A;
+}
+.logo-icon {
+  width: 34px; height: 34px;
+  background: #00C85A;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; font-weight: 900; color: #111;
+  flex-shrink: 0;
+}
+.logo-text { font-size: 17px; font-weight: 700; color: #fff; }
+.header-divider { width: 1px; height: 24px; background: #444; margin: 0 2px; }
+.header-sub { font-size: 13px; color: #888; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.header-badge {
+  background: #00C85A22; border: 1px solid #00C85A55;
+  color: #00C85A; font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 20px;
+}
+.last-updated { font-size: 11px; color: #555; }
+
+/* NAV TABS */
+.nav {
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 0 32px;
+  display: flex;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.nav-tab {
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  user-select: none;
+}
+.nav-tab:hover { color: #333; }
+.nav-tab.active { color: #00C85A; border-bottom-color: #00C85A; }
+
+/* PAGES */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── SKILLS PAGE ─────────────────── */
+.controls {
+  background: #fff;
+  padding: 16px 32px;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 400px; }
+.search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #bbb; font-size: 14px; }
+.search-input {
+  width: 100%; padding: 9px 12px 9px 32px;
+  border: 1.5px solid #e0e0e0; border-radius: 8px;
+  font-size: 13px; outline: none; color: #111;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: #00C85A; }
+
+.toggle-row {
+  display: flex;
+  background: #f4f4f4;
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+.toggle-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.toggle-btn.active {
+  background: #fff;
+  color: #111;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.filters {
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  padding: 10px 32px 14px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+.filter-btn {
+  padding: 5px 12px; border-radius: 20px;
+  border: 1.5px solid #e0e0e0; background: #fff;
+  font-size: 11px; font-weight: 600; color: #666;
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.filter-btn:hover { border-color: #00C85A; color: #00C85A; }
+.filter-btn.active { background: #00C85A; border-color: #00C85A; color: #fff; }
+.result-count { font-size: 12px; color: #aaa; margin-left: auto; }
+
+.grid {
+  padding: 24px 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  background: #fff; border-radius: 12px;
+  border: 1.5px solid #e8e8e8; padding: 18px;
+  transition: all 0.2s;
+}
+.card:hover {
+  border-color: #00C85A;
+  box-shadow: 0 4px 18px rgba(0,200,90,0.1);
+  transform: translateY(-1px);
+}
+.card.hidden { display: none; }
+
+.card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.card-emoji { font-size: 20px; line-height: 1; margin-top: 2px; }
+.card-name { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 4px; }
+.badges { display: flex; gap: 5px; flex-wrap: wrap; }
+.badge {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.4px;
+  padding: 2px 7px; border-radius: 4px;
+}
+.badge-coder  { background: #E8FFF2; color: #007A3A; }
+.badge-base   { background: #F0F4FF; color: #0044CC; }
+.badge-cx     { background: #E8F5FF; color: #0080CC; }
+.badge-ops    { background: #F0FFF4; color: #007A3A; }
+.badge-comercial { background: #FFF8E8; color: #CC7700; }
+.badge-student{ background: #F8F0FF; color: #7700CC; }
+.badge-studio { background: #FFF0F5; color: #CC0055; }
+.badge-docs   { background: #F0F4FF; color: #0044CC; }
+.badge-meta   { background: #F5F5F5; color: #555; }
+.badge-catalog{ background: #FFFBF0; color: #AA6600; }
+
+.card-desc { font-size: 12.5px; color: #555; line-height: 1.5; margin-bottom: 12px; }
+.section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #bbb; margin-bottom: 5px; }
+.triggers { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.trigger-tag {
+  background: #f5f5f5; border: 1px solid #e5e5e5;
+  color: #555; font-size: 11px; padding: 2px 7px;
+  border-radius: 4px; font-style: italic;
+}
+.cmd-row {
+  display: flex; align-items: center; gap: 7px;
+  padding-top: 10px; margin-top: 10px;
+  border-top: 1px solid #f0f0f0;
+}
+.cmd-label { font-size: 11px; color: #bbb; font-weight: 600; }
+.cmd-chip {
+  background: #111; color: #00C85A;
+  font-size: 11px; font-family: 'Courier New', monospace;
+  padding: 2px 8px; border-radius: 4px; font-weight: 600;
+}
+
+.empty-state {
+  grid-column: 1/-1; text-align: center; padding: 50px 20px; color: #bbb;
+}
+.empty-state-icon { font-size: 36px; margin-bottom: 10px; }
+
+/* ── PLUGINS PAGE ─────────────────── */
+.page-inner { padding: 32px; max-width: 960px; margin: 0 auto; }
+.page-title { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: #777; margin-bottom: 28px; line-height: 1.5; }
+
+.plugin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.plugin-card {
+  background: #fff; border-radius: 14px; border: 1.5px solid #e8e8e8; padding: 22px;
+  transition: all 0.2s;
+}
+.plugin-card:hover { border-color: #00C85A; box-shadow: 0 4px 18px rgba(0,200,90,0.08); }
+.plugin-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.plugin-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.plugin-name { font-size: 15px; font-weight: 700; color: #111; }
+.plugin-origin { font-size: 11px; color: #aaa; font-weight: 500; margin-top: 2px; }
+.plugin-desc { font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 14px; }
+.plugin-skills-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #bbb; margin-bottom: 7px; }
+.plugin-skills { display: flex; flex-wrap: wrap; gap: 5px; }
+.skill-pill {
+  background: #f5f5f5; border: 1px solid #e5e5e5;
+  font-size: 11px; color: #444; padding: 3px 9px; border-radius: 20px; font-weight: 500;
+}
+
+/* ── HOW TO PAGE ────────────────────── */
+.steps-container { max-width: 760px; }
+.step-block { display: flex; gap: 18px; margin-bottom: 36px; }
+.step-num {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: #111; color: #00C85A;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 800; margin-top: 2px;
+}
+.step-content {}
+.step-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 6px; }
+.step-desc { font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 10px; }
+.step-tip {
+  background: #F0FFF4; border-left: 3px solid #00C85A;
+  border-radius: 0 6px 6px 0; padding: 10px 14px;
+  font-size: 13px; color: #444; line-height: 1.5; margin-top: 10px;
+}
+.step-tip strong { color: #007A3A; }
+.code-block {
+  background: #111; color: #00C85A;
+  font-family: 'Courier New', monospace;
+  font-size: 13px; padding: 12px 16px;
+  border-radius: 8px; margin-top: 10px; line-height: 1.6;
+  white-space: pre-wrap; word-break: break-all;
+}
+.section-h2 { font-size: 18px; font-weight: 700; color: #111; margin: 36px 0 16px; padding-top: 20px; border-top: 1px solid #e8e8e8; }
+.section-h2:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+
+/* ── GLOSSARY PAGE ─────────────────── */
+.glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 36px; }
+.glossary-card {
+  background: #fff; border-radius: 14px; border: 1.5px solid #e8e8e8; padding: 22px;
+}
+.glossary-term { font-size: 22px; font-weight: 800; color: #111; margin-bottom: 4px; }
+.glossary-en { font-size: 12px; color: #bbb; font-style: italic; margin-bottom: 12px; }
+.glossary-def { font-size: 13px; color: #555; line-height: 1.6; }
+.glossary-example {
+  margin-top: 12px; background: #f8f8f8; border-radius: 8px;
+  padding: 10px 12px; font-size: 12px; color: #666; line-height: 1.5;
+}
+.glossary-example strong { color: #333; display: block; margin-bottom: 3px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #bbb; }
+
+.analogy-box {
+  background: #fff; border-radius: 14px; border: 1.5px solid #e8e8e8; padding: 24px;
+  margin-bottom: 24px;
+}
+.analogy-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 14px; }
+.analogy-row { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+.analogy-left { font-size: 20px; width: 36px; text-align: center; flex-shrink: 0; }
+.analogy-right {}
+.analogy-label { font-size: 13px; font-weight: 700; color: #111; }
+.analogy-desc { font-size: 12.5px; color: #777; margin-top: 2px; }
+
+/* footer */
+.footer {
+  text-align: center; padding: 24px; font-size: 12px;
+  color: #bbb; border-top: 1px solid #e8e8e8; background: #fff;
+}
+.footer strong { color: #00C85A; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-icon">C</div>
+  <span class="logo-text">Coderhouse</span>
+  <div class="header-divider"></div>
+  <span class="header-sub">Skills & Plugins — Guía del equipo</span>
+  <div class="header-right">
+    <span class="last-updated">Actualizado mayo 2026</span>
+    <span class="header-badge" id="totalBadge">Cargando…</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-tab active" data-page="skills">🧩 Skills</div>
+  <div class="nav-tab" data-page="plugins">🔌 Plugins instalados</div>
+  <div class="nav-tab" data-page="howto">📖 ¿Cómo empezar?</div>
+  <div class="nav-tab" data-page="glossary">📚 Glosario</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 1: SKILLS
+══════════════════════════════════════════ -->
+<div class="page active" id="page-skills">
+
+  <div class="controls">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" type="text" placeholder="Buscar por nombre, descripción o frase…" />
+    </div>
+    <div class="toggle-row">
+      <button class="toggle-btn active" data-origin="all">Todas</button>
+      <button class="toggle-btn" data-origin="coder">🏠 De Coderhouse</button>
+      <button class="toggle-btn" data-origin="base">⚡ Base de Claude</button>
+    </div>
+    <span class="result-count" id="resultCount"></span>
+  </div>
+
+  <div class="filters" id="filterRow">
+    <button class="filter-btn active" data-cat="all">Todas las categorías</button>
+    <button class="filter-btn" data-cat="cx">🎧 CX / Intercom</button>
+    <button class="filter-btn" data-cat="ops">🏫 Operaciones</button>
+    <button class="filter-btn" data-cat="comercial">💰 Comercial</button>
+    <button class="filter-btn" data-cat="student">🎓 Estudiantes</button>
+    <button class="filter-btn" data-cat="studio">🤖 Studio Chat</button>
+    <button class="filter-btn" data-cat="catalog">📦 Catálogo/B2B</button>
+    <button class="filter-btn" data-cat="docs">📄 Documentos</button>
+    <button class="filter-btn" data-cat="meta">⚙️ Config</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 2: PLUGINS
+══════════════════════════════════════════ -->
+<div class="page" id="page-plugins">
+  <div class="page-inner">
+    <div class="page-title">🔌 Plugins instalados</div>
+    <div class="page-subtitle">Los plugins son paquetes que extienden las capacidades de Claude. Cada plugin agrupa varias skills relacionadas. Estos son los que tenemos activos en Coderhouse.</div>
+
+    <div class="plugin-grid" id="pluginGrid"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 3: HOW TO
+══════════════════════════════════════════ -->
+<div class="page" id="page-howto">
+  <div class="page-inner">
+    <div class="page-title">📖 ¿Cómo empezar con las Skills?</div>
+    <div class="page-subtitle">Guías paso a paso para usar, instalar y crear tus propias skills en Cowork.</div>
+
+    <div class="steps-container">
+
+      <div class="section-h2">🚀 Cómo activar una skill</div>
+
+      <div class="step-block">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Escribile a Claude de forma natural</div>
+          <div class="step-desc">No hace falta ningún comando especial. Claude detecta automáticamente qué skill usar según lo que escribís. Por ejemplo, si escribís "qué cancelaciones hubo esta semana", se activa la skill de cancelaciones sola.</div>
+          <div class="step-tip">💡 <strong>Tip:</strong> Usá frases del día a día. Claude entiende contexto, no necesitás tecnicismos.</div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">O usá el comando directo con "/"</div>
+          <div class="step-desc">Algunas skills tienen un comando corto. Escribiendo ese comando la activás directamente, sin importar cómo lo formulés.</div>
+          <div class="code-block">/cancelaciones
+/revision-diaria
+/retencion-cx</div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Claude va a pedirte los datos que necesita</div>
+          <div class="step-desc">Muchas skills hacen preguntas de clarificación (ej: "¿qué período querés consultar?"). Respondé y Claude arranca con la tarea.</div>
+        </div>
+      </div>
+
+      <div class="section-h2">🔌 Cómo instalar un plugin</div>
+
+      <div class="step-block">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Pedile a Claude que busque el plugin</div>
+          <div class="step-desc">Describí lo que necesitás y Claude va a buscar en el registro de plugins disponibles.</div>
+          <div class="code-block">Ejemplo: "Quiero conectar Notion a mi Cowork"
+Ejemplo: "Hay algún plugin para Jira?"</div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Confirmá la instalación</div>
+          <div class="step-desc">Claude te va a mostrar una vista previa del plugin y sus skills. Confirmás y queda instalado en tu sesión de Cowork.</div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Conectá las credenciales si hace falta</div>
+          <div class="step-desc">Algunos plugins (como Intercom, Google Drive, Slack) requieren autenticación. Claude te guía paso a paso para conectar tu cuenta.</div>
+          <div class="step-tip">💡 <strong>Tip:</strong> Una vez conectado, el plugin queda disponible en todas tus sesiones de Cowork.</div>
+        </div>
+      </div>
+
+      <div class="section-h2">🛠️ Cómo crear una skill propia</div>
+
+      <div class="step-block">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Activá la skill "Skill Creator"</div>
+          <div class="step-desc">Esta skill meta te ayuda a construir nuevas skills. Describile a Claude qué tarea repetitiva querés automatizar.</div>
+          <div class="code-block">Ejemplo: "Quiero crear una skill que genere un reporte diario de NPS"
+Ejemplo: "Ayudame a crear una skill para buscar datos en nuestra BD"</div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Claude arma el archivo SKILL.md</div>
+          <div class="step-desc">La skill queda definida en un archivo de texto con: nombre, descripción, frases de activación e instrucciones paso a paso para Claude.</div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Testeala y refinala</div>
+          <div class="step-desc">Probá la skill con distintas frases. Si Claude no la activa bien, pedile que optimice la descripción. La skill creator también puede correr evaluaciones automáticas.</div>
+          <div class="step-tip">💡 <strong>Tip:</strong> Cuanto más específica sea la descripción de la skill, mejor la detecta Claude automáticamente.</div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Compartila con el equipo</div>
+          <div class="step-desc">Una vez que la skill funciona bien, podés empaquetar el archivo en un plugin para que todo el equipo la tenga disponible. Usá la skill "Crear Plugin" para hacer el paquete y distribuirlo.</div>
+          <div class="code-block">Decile a Claude: "Quiero empaquetar esta skill en un plugin para compartirla"</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 4: GLOSSARY
+══════════════════════════════════════════ -->
+<div class="page" id="page-glossary">
+  <div class="page-inner">
+    <div class="page-title">📚 Glosario</div>
+    <div class="page-subtitle">Conceptos clave para entender cómo funciona el ecosistema de Claude + Cowork.</div>
+
+    <div class="analogy-box">
+      <div class="analogy-title">🧠 La analogía más fácil</div>
+      <div class="analogy-row">
+        <div class="analogy-left">📱</div>
+        <div class="analogy-right">
+          <div class="analogy-label">Claude = el teléfono</div>
+          <div class="analogy-desc">La base inteligente que entiende todo y puede hacer muchas cosas.</div>
+        </div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-left">🏪</div>
+        <div class="analogy-right">
+          <div class="analogy-label">Plugin = una app</div>
+          <div class="analogy-desc">Extiende las capacidades de Claude para un área específica. Lo "instalás" una vez.</div>
+        </div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-left">⚡</div>
+        <div class="analogy-right">
+          <div class="analogy-label">Skill = una función de esa app</div>
+          <div class="analogy-desc">Una tarea específica que Claude sabe hacer gracias al plugin. Se activa por contexto.</div>
+        </div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-left">🖥️</div>
+        <div class="analogy-right">
+          <div class="analogy-label">Cowork = el sistema operativo</div>
+          <div class="analogy-desc">El entorno donde todo convive: Claude + plugins + skills + tus herramientas conectadas.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glossary-grid">
+      <div class="glossary-card">
+        <div class="glossary-term">Skill</div>
+        <div class="glossary-en">habilidad</div>
+        <div class="glossary-def">Una instrucción detallada que le dice a Claude cómo completar una tarea específica. Es un archivo de texto (SKILL.md) con pasos, contexto y ejemplos.</div>
+        <div class="glossary-example">
+          <strong>Ejemplo</strong>
+          "intercom-metricas" le enseña a Claude cómo consultar la API de Intercom, qué equipos existen, cómo calcular el TMR y cómo presentar los resultados.
+        </div>
+      </div>
+
+      <div class="glossary-card">
+        <div class="glossary-term">Plugin</div>
+        <div class="glossary-en">extensión</div>
+        <div class="glossary-def">Un paquete que agrupa varias skills relacionadas, conectores a herramientas externas (MCPs) y configuraciones. Se instala una vez y queda disponible para toda la sesión.</div>
+        <div class="glossary-example">
+          <strong>Ejemplo</strong>
+          El plugin "coderhouse-api" agrupa todas las skills de gestión: estudiantes, cohorts, pagos, catálogo, certificados.
+        </div>
+      </div>
+
+      <div class="glossary-card">
+        <div class="glossary-term">MCP</div>
+        <div class="glossary-en">Model Context Protocol</div>
+        <div class="glossary-def">El protocolo estándar que permite a Claude conectarse con herramientas externas (Slack, Google Drive, Intercom, etc.) y ejecutar acciones reales en ellas.</div>
+        <div class="glossary-example">
+          <strong>Ejemplo</strong>
+          El MCP de Intercom permite que Claude busque conversaciones, lea métricas y analice tickets directamente desde tu cuenta.
+        </div>
+      </div>
+
+      <div class="glossary-card">
+        <div class="glossary-term">Cowork</div>
+        <div class="glossary-en">modo colaborativo</div>
+        <div class="glossary-def">El entorno de escritorio de Claude que combina acceso a archivos, shell de Linux, plugins y skills para tareas operativas complejas. Está pensado para equipos no técnicos.</div>
+        <div class="glossary-example">
+          <strong>Ejemplo</strong>
+          Desde Cowork podés pedirle a Claude que genere un reporte de cancelaciones, lo guarde en Drive y lo mande por Slack, todo en un solo mensaje.
+        </div>
+      </div>
+
+      <div class="glossary-card">
+        <div class="glossary-term">Artifact</div>
+        <div class="glossary-en">artefacto</div>
+        <div class="glossary-def">Un archivo HTML interactivo que Claude genera y que persiste entre sesiones. Se abre en el sidebar de Cowork y puede actualizarse con datos frescos.</div>
+        <div class="glossary-example">
+          <strong>Ejemplo</strong>
+          Este mismo diccionario es un artifact: Claude lo creó, vive en tu Cowork y puede actualizarse cuando se suman nuevas skills.
+        </div>
+      </div>
+
+      <div class="glossary-card">
+        <div class="glossary-term">Schedule</div>
+        <div class="glossary-en">tarea programada</div>
+        <div class="glossary-def">Una tarea que Claude ejecuta automáticamente en intervalos de tiempo (diario, semanal, etc.) sin que vos tengas que pedirlo.</div>
+        <div class="glossary-example">
+          <strong>Ejemplo</strong>
+          La revisión diaria de cohorts puede estar programada para correrse todos los días a las 8am y mandar el resumen automáticamente por Slack.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · Mayo 2026 · Para actualizar, pedile a Claude que modifique este diccionario
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────
+const skills = [
+  // CX / INTERCOM — Coderhouse
+  { origin:"coder", cat:"cx", emoji:"📊", name:"Métricas de Intercom", skill:"intercom-metricas",
+    desc:"Consulta TMR, CSAT, retención del bot e incoming total por equipo y período (hoy, ayer, semana, rango de fechas).",
+    triggers:["dame el TMR de esta semana","cuál fue el CSAT del lunes","retención del bot de Preventa","métricas de hoy","incoming total del martes"], cmd:null },
+
+  { origin:"coder", cat:"cx", emoji:"💬", name:"Análisis de Convos Intercom", skill:"intercom-convos",
+    desc:"Analiza conversaciones de estudiantes con devoluciones/bajas. Genera reportes CX estructurados. Solo lectura.",
+    triggers:["qué pasó con esta baja","analizá este estudiante en Intercom","reporte CX de devolución","revisá las conversaciones de los que se dieron de baja"], cmd:null },
+
+  { origin:"coder", cat:"cx", emoji:"🚨", name:"Alertas Intercom", skill:"pruebacxcowork:alertas-intercom",
+    desc:"Detecta picos de volumen y palabras clave críticas en Intercom. Notifica al equipo en Slack cuando hay algo urgente.",
+    triggers:["verificar alertas","hay alguna alerta","monitorear Intercom","revisar si hay algo crítico","enviar alerta a Slack"], cmd:null },
+
+  { origin:"coder", cat:"cx", emoji:"🔍", name:"Análisis de CX", skill:"pruebacxcowork:analisis-cx",
+    desc:"Análisis on-demand: top pains, voz del usuario, distribución de tags, tendencias de tickets y estado de salud del soporte.",
+    triggers:["análisis de CX","qué están reportando los usuarios","top pains","análisis de tickets","cuáles son los principales problemas"], cmd:null },
+
+  { origin:"coder", cat:"cx", emoji:"📈", name:"Retención CX — Studio Chat", skill:"retencion-cx",
+    desc:"Análisis semanal de retención, fricción y conversión de los asistentes de Studio Chat (Preventa + Estudiantes). Compara semana a semana.",
+    triggers:["análisis de handoff","retención de leads","cómo viene el bot esta semana","cuántos leads convirtieron","diagnóstico de los asistentes"], cmd:"retencion-cx" },
+
+  { origin:"coder", cat:"cx", emoji:"📋", name:"Métricas de Ventas (VD)", skill:"metricas-vd",
+    desc:"Extrae datos de Intercom (retención de bot, volumen, derivaciones, TMR) y los registra en Google Sheets para seguimiento histórico.",
+    triggers:["métricas de ventas","registro de métricas","reporte VD","actualizar el sheet de métricas"], cmd:null },
+
+  // OPERACIONES — Coderhouse
+  { origin:"coder", cat:"ops", emoji:"📅", name:"Revisión Diaria de Cohorts", skill:"revision-diaria-cohorts",
+    desc:"Revisión operativa diaria de comisiones con clases. Detecta problemas: sin staff, sin Zoom, sin estudiantes, clases cortas. Genera Excel y envía resumen por Slack.",
+    triggers:["qué clases hay hoy","revisame los cohorts de mañana","hay algo raro con las clases del jueves","hacé la revisión diaria","armame el reporte de hoy"], cmd:"revision-diaria" },
+
+  { origin:"coder", cat:"ops", emoji:"❌", name:"Tablero de Cancelaciones", skill:"cancelaciones",
+    desc:"Consulta incidentes de cancelación de clases y ausencias de instructores. Genera un tablero HTML visual interactivo.",
+    triggers:["mostrame las cancelaciones","armame el tablero","qué cancelaciones hubo esta semana","incidentes del mes","tablero de ausencias"], cmd:"cancelaciones" },
+
+  { origin:"coder", cat:"ops", emoji:"🎓", name:"Dashboard Académico", skill:"dashboard-academico",
+    desc:"Dashboard interactivo con métricas por curso/cohorte: progreso promedio, entregas, proyectos finales, completion rate y NPS.",
+    triggers:["reporte académico","dashboard de métricas","KPIs del curso","progreso de los estudiantes","NPS por curso"], cmd:null },
+
+  { origin:"coder", cat:"ops", emoji:"⭐", name:"Reporte Semanal de Ratings", skill:"weekly-ratings-report",
+    desc:"Genera el reporte semanal de ratings de Coderhouse con análisis por curso, instructor y período.",
+    triggers:["reporte semanal de ratings","generate ratings report","weekly ratings","run the ratings report"], cmd:null },
+
+  { origin:"coder", cat:"ops", emoji:"🏫", name:"Gestión de Cohorts", skill:"coderhouse-api:managing-cohorts",
+    desc:"CRUD de cohorts, clases, asignación de instructores y tutores, sustituciones, incidentes, feriados y regeneración de Zoom.",
+    triggers:["crear comisión","asignar instructor","cambiar tutor","regenerar Zoom","marcar feriado","agregar sustituto"], cmd:null },
+
+  // COMERCIAL — Coderhouse
+  { origin:"coder", cat:"comercial", emoji:"💳", name:"Gestión de Pagos", skill:"coderhouse-api:managing-payments",
+    desc:"Investiga pagos, checkout sessions, webhooks, suscripciones, cupones y promociones. Permite reintentar webhooks.",
+    triggers:["buscar un pago","revisar el checkout","reenviar webhook","analizar suscripción","cupón de descuento","investigar transacción"], cmd:null },
+
+  { origin:"coder", cat:"comercial", emoji:"↩️", name:"Análisis de Devoluciones", skill:"devoluciones-coderhouse",
+    desc:"Analiza el archivo de devoluciones (Google Sheets): montos, motivos, países, cursos con más bajas. Genera dashboards.",
+    triggers:["cuánto se devolvió esta semana","qué cursos tienen más bajas","motivos de devolución","cómo venimos de devoluciones","bajas de marzo"], cmd:null },
+
+  { origin:"coder", cat:"comercial", emoji:"👑", name:"Gestión de Membresías", skill:"coderhouse-api:managing-memberships",
+    desc:"Gestiona membresías FREE/BASIC/PRO/CORPORATE: asigna estudiantes, licencias, seats y entitlements.",
+    triggers:["asignar membresía","CoderPro","acceso del estudiante","crear licencia","asignar seat"], cmd:null },
+
+  // ESTUDIANTES — Coderhouse
+  { origin:"coder", cat:"student", emoji:"🧑‍🎓", name:"Gestión de Estudiantes", skill:"coderhouse-api:managing-student",
+    desc:"Busca estudiantes por email, consulta inscripciones, cronograma, progreso, entregas y cambios de cohorte.",
+    triggers:["buscar estudiante","clases del estudiante","progreso de inscripción","entrega de proyecto final","cambiar de comisión"], cmd:null },
+
+  { origin:"coder", cat:"student", emoji:"📜", name:"Gestión de Certificados", skill:"coderhouse-api:managing-certificates",
+    desc:"Genera, valida, revoca, lista y descarga certificados y diplomas de estudiantes.",
+    triggers:["generar certificado","validar diploma","revocar certificado","listar certificados","descargar diploma"], cmd:null },
+
+  // STUDIO CHAT — Coderhouse
+  { origin:"coder", cat:"studio", emoji:"🤖", name:"Studio Chat — Builder", skill:"studiochat:builder",
+    desc:"Crea y configura asistentes de Studio Chat: instrucciones, knowledge bases, skills, herramientas API, alertas y tópicos de tendencia.",
+    triggers:["crear asistente","actualizar playbook","configurar el bot","agregar knowledge base","modificar instrucciones del asistente"], cmd:null },
+
+  { origin:"coder", cat:"studio", emoji:"📉", name:"Studio Chat — Data Expert", skill:"studiochat:data-expert",
+    desc:"Analiza datos de Studio Chat: deflection rate, sentimientos, handoffs, uso de herramientas, sparklines.",
+    triggers:["analizar conversaciones de Studio","deflection rate del bot","distribución de sentimientos","cuántos handoffs hubo"], cmd:null },
+
+  { origin:"coder", cat:"studio", emoji:"🧪", name:"Studio Chat — Quality Engineer", skill:"studiochat:quality-engineer",
+    desc:"Testea el comportamiento del asistente. Crea casos de prueba, corre evaluaciones, analiza resultados y compara versiones.",
+    triggers:["testear el asistente","crear QA scenarios","correr evals","assertion pass rate","verificar comportamiento del bot"], cmd:null },
+
+  { origin:"coder", cat:"studio", emoji:"📧", name:"Studio Chat — Report Builder", skill:"studiochat:report-builder",
+    desc:"Crea y configura reportes automáticos en Studio Chat con entrega por Slack.",
+    triggers:["crear reporte automático","configurar reporte en Studio","programar reporte","reportes por Slack de Studio"], cmd:null },
+
+  // CATÁLOGO / B2B — Coderhouse
+  { origin:"coder", cat:"catalog", emoji:"📦", name:"Gestión del Catálogo", skill:"coderhouse-api:managing-catalog",
+    desc:"Administra productos (cursos, workshops, webinars), categorías, precios por región, actualizaciones masivas y programas académicos.",
+    triggers:["actualizar precio","crear curso","cambiar categoría","precio por región","listar webinars","versión del programa"], cmd:null },
+
+  { origin:"coder", cat:"catalog", emoji:"🏢", name:"Organizaciones B2B", skill:"coderhouse-api:managing-organizations",
+    desc:"Gestiona clientes B2B: crea organizaciones, configura Clerk, invita miembros, asigna planes, crea licencias y seats.",
+    triggers:["crear organización","setup B2B","invitar miembros a empresa","asignar plan corporativo","crear licencia B2B"], cmd:null },
+
+  // BASE DE CLAUDE
+  { origin:"base", cat:"docs", emoji:"📝", name:"Word (.docx)", skill:"docx",
+    desc:"Crea, edita y manipula documentos Word: tabla de contenidos, encabezados, imágenes, tracked changes, membretados.",
+    triggers:["crear Word","documento .docx","reporte en Word","memo","carta formal"], cmd:null },
+
+  { origin:"base", cat:"docs", emoji:"📄", name:"PDF", skill:"pdf",
+    desc:"Lee, extrae, crea, combina, divide, rota, aplica watermark, llena formularios y hace OCR en PDFs.",
+    triggers:["crear PDF","extraer texto de PDF","combinar PDFs","dividir PDF","llenar formulario PDF"], cmd:null },
+
+  { origin:"base", cat:"docs", emoji:"📊", name:"Excel (.xlsx)", skill:"xlsx",
+    desc:"Crea, edita y analiza planillas Excel con fórmulas, formatos, gráficos, tablas y conversiones.",
+    triggers:["crear Excel","hacer una planilla","exportar a xlsx","limpiar datos","tabla con fórmulas"], cmd:null },
+
+  { origin:"base", cat:"docs", emoji:"🎞️", name:"Presentación (.pptx)", skill:"pptx",
+    desc:"Crea, edita y lee presentaciones PowerPoint: slides, templates, layouts, notas del orador.",
+    triggers:["hacer una presentación","crear slides","deck","armar un PowerPoint","editar pptx"], cmd:null },
+
+  { origin:"base", cat:"meta", emoji:"⚡", name:"Skill Creator", skill:"skill-creator",
+    desc:"Crea skills nuevas, mejora las existentes, corre evaluaciones y optimiza descripciones para mejor activación automática.",
+    triggers:["crear una skill","mejorar esta skill","optimizar descripción","testear una skill","correr evals de skill"], cmd:null },
+
+  { origin:"base", cat:"meta", emoji:"🔌", name:"Crear Plugin", skill:"cowork-plugin-management:create-cowork-plugin",
+    desc:"Guía paso a paso para crear un plugin de Cowork desde cero: MCPs, skills y herramientas empaquetadas.",
+    triggers:["crear plugin","armar un plugin","nuevo plugin desde cero","desarrollar plugin"], cmd:null },
+
+  { origin:"base", cat:"meta", emoji:"🛠️", name:"Customizar Plugin", skill:"cowork-plugin-management:cowork-plugin-customizer",
+    desc:"Personaliza un plugin existente para adaptarlo a las herramientas y flujos de trabajo de tu organización.",
+    triggers:["configurar plugin","personalizar plugin","ajustar settings del plugin","modificar plugin"], cmd:null },
+
+  { origin:"base", cat:"meta", emoji:"⏰", name:"Tareas Programadas", skill:"schedule",
+    desc:"Crea tareas que se ejecutan automáticamente en intervalos de tiempo (diario, semanal, etc.) o bajo demanda.",
+    triggers:["programar una tarea","correr todos los días","automatizar reporte","tarea semanal"], cmd:null },
+
+  { origin:"base", cat:"meta", emoji:"🚀", name:"Setup de Cowork", skill:"setup-cowork",
+    desc:"Setup guiado para configurar Cowork: instala plugins según tu rol, conecta herramientas y probá las primeras skills.",
+    triggers:["setup inicial","configurar Cowork","quiero empezar a usar Cowork","instalar plugins"], cmd:null },
+];
+
+const plugins = [
+  { icon:"🏫", color:"#E8FFF2", name:"coderhouse-api", origin:"Coderhouse",
+    desc:"Plugin oficial de Coderhouse. Conecta con la API interna para gestionar estudiantes, cohorts, pagos, catálogo, membresías, organizaciones y certificados.",
+    skills:["managing-student","managing-cohorts","managing-payments","managing-catalog","managing-memberships","managing-organizations","managing-certificates"] },
+  { icon:"🤖", color:"#FFF0F5", name:"studiochat", origin:"Coderhouse",
+    desc:"Plugin para administrar los asistentes de Studio Chat: configuración, análisis de datos, testing y reportes automatizados.",
+    skills:["builder","data-expert","quality-engineer","report-builder"] },
+  { icon:"🎧", color:"#E8F5FF", name:"pruebacxcowork", origin:"Coderhouse CX",
+    desc:"Plugin del equipo de CX. Incluye monitoreo de Intercom, alertas automáticas y análisis de tickets.",
+    skills:["alertas-intercom","analisis-cx"] },
+  { icon:"⚡", color:"#F5F5FF", name:"anthropic-skills", origin:"Anthropic",
+    desc:"Skills base incluidas por defecto en Claude. Documentos, planillas, presentaciones, PDFs y herramientas de configuración.",
+    skills:["docx","pdf","xlsx","pptx","skill-creator","schedule","setup-cowork","cancelaciones","devoluciones-coderhouse","intercom-metricas","intercom-convos","dashboard-academico","retencion-cx","metricas-vd","weekly-ratings-report","revision-diaria-cohorts"] },
+  { icon:"🔌", color:"#FFF8E8", name:"cowork-plugin-management", origin:"Anthropic",
+    desc:"Herramientas para crear y customizar plugins de Cowork para tu organización.",
+    skills:["create-cowork-plugin","cowork-plugin-customizer"] },
+];
+
+// ── BUILD SKILLS ─────────────────────────────────────────────
+const catLabels = { cx:"CX / Intercom", ops:"Operaciones", comercial:"Comercial", student:"Estudiantes", studio:"Studio Chat", catalog:"Catálogo/B2B", docs:"Documentos", meta:"Config" };
+
+function buildCard(s) {
+  const originBadge = s.origin === 'coder'
+    ? `<span class="badge badge-coder">🏠 Coderhouse</span>`
+    : `<span class="badge badge-base">⚡ Claude Base</span>`;
+  const catBadge = `<span class="badge badge-${s.cat}">${catLabels[s.cat]||s.cat}</span>`;
+  const triggers = s.triggers.map(t => `<span class="trigger-tag">"${t}"</span>`).join('');
+  const cmd = s.cmd ? `<div class="cmd-row"><span class="cmd-label">Comando:</span><span class="cmd-chip">/${s.cmd}</span></div>` : '';
+  return `
+    <div class="card" data-cat="${s.cat}" data-origin="${s.origin}"
+         data-search="${(s.name+' '+s.desc+' '+s.triggers.join(' ')+' '+s.skill).toLowerCase()}">
+      <div class="card-header">
+        <span class="card-emoji">${s.emoji}</span>
+        <div>
+          <div class="card-name">${s.name}</div>
+          <div class="badges">${originBadge}${catBadge}</div>
+        </div>
+      </div>
+      <div class="card-desc">${s.desc}</div>
+      <div class="section-label">Frases que la activan</div>
+      <div class="triggers">${triggers}</div>
+      ${cmd}
+    </div>`;
+}
+
+const grid = document.getElementById('grid');
+grid.innerHTML = skills.map(buildCard).join('');
+document.getElementById('totalBadge').textContent = `${skills.length} skills`;
+
+// ── BUILD PLUGINS ─────────────────────────────────────────────
+const pluginGrid = document.getElementById('pluginGrid');
+pluginGrid.innerHTML = plugins.map(p => `
+  <div class="plugin-card">
+    <div class="plugin-header">
+      <div class="plugin-icon" style="background:${p.color}">${p.icon}</div>
+      <div>
+        <div class="plugin-name">${p.name}</div>
+        <div class="plugin-origin">por ${p.origin}</div>
+      </div>
+    </div>
+    <div class="plugin-desc">${p.desc}</div>
+    <div class="plugin-skills-label">Skills incluidas</div>
+    <div class="plugin-skills">${p.skills.map(s=>`<span class="skill-pill">${s}</span>`).join('')}</div>
+  </div>`).join('');
+
+// ── SEARCH + FILTER ───────────────────────────────────────────
+let activeFilter = 'all';
+let activeOrigin = 'all';
+
+function updateDisplay() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const cards = grid.querySelectorAll('.card');
+  let visible = 0;
+  cards.forEach(card => {
+    const matchCat    = activeFilter === 'all' || card.dataset.cat === activeFilter;
+    const matchOrigin = activeOrigin === 'all' || card.dataset.origin === activeOrigin;
+    const matchSearch = !q || card.dataset.search.includes(q);
+    if (matchCat && matchOrigin && matchSearch) { card.classList.remove('hidden'); visible++; }
+    else card.classList.add('hidden');
+  });
+  const empty = grid.querySelector('.empty-state');
+  if (empty) empty.remove();
+  if (visible === 0) grid.insertAdjacentHTML('beforeend',`<div class="empty-state"><div class="empty-state-icon">🔎</div><div>Sin resultados para "<strong>${q||'filtro actual'}</strong>"</div></div>`);
+  document.getElementById('resultCount').textContent = `${visible} de ${skills.length}`;
+}
+
+document.getElementById('searchInput').addEventListener('input', updateDisplay);
+
+document.getElementById('filterRow').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.cat;
+  updateDisplay();
+});
+
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeOrigin = btn.dataset.origin;
+    updateDisplay();
+  });
+});
+
+// ── NAV TABS ──────────────────────────────────────────────────
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('page-' + tab.dataset.page).classList.add('active');
+  });
+});
+
+updateDisplay();
+</script>
+</body>
+</html>
