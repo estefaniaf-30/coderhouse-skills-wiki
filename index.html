@@ -357,7 +357,7 @@ body {
     <div class="page-title">🔌 Plugins</div>
     <div class="page-subtitle">Un plugin es un paquete de skills que se instala en tu Cowork. <strong>Son distintos a los MCPs/conectores</strong> — un plugin le enseña a Claude cómo hacer algo; un conector le da acceso a una herramienta externa (Slack, Drive, Intercom). Abajo: los que ya tenemos activos y los que se pueden sumar.</div>
 
-    <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#aaa;margin:24px 0 12px;">Instalados actualmente</div>
+
     <div class="plugin-grid" id="pluginGrid"></div>
 
     <!-- QUÉ MÁS SE PUEDE SUMAR -->
@@ -779,14 +779,14 @@ const plugins = [
     desc:"Plugin del equipo de CX. Incluye monitoreo de Intercom, alertas automáticas y análisis de tickets.",
     skills:["alertas-intercom","analisis-cx"] },
   { icon:"⚡", color:"#F5F5FF", name:"anthropic-skills", origin:"Anthropic",
-    desc:"Skills base incluidas por defecto en todo Cowork: creación de documentos Word, Excel, PDF y PPT, tareas programadas y configuración inicial.",
-    skills:["docx","pdf","xlsx","pptx","skill-creator","schedule","setup-cowork"] },
+    desc:"Skills base de Claude para creación de documentos: Word, PDF, Excel y PowerPoint.",
+    skills:["docx","pdf","xlsx","pptx"] },
   { icon:"🏠", color:"#E8FFF2", name:"Skills Coderhouse (sueltas)", origin:"Coderhouse",
     desc:"Skills propias de Coderhouse que no forman parte de un plugin específico. Incluyen los tableros operativos, análisis de devoluciones, métricas de CX y reportes automáticos.",
     skills:["cancelaciones","devoluciones-coderhouse","intercom-metricas","intercom-convos","dashboard-academico","retencion-cx","metricas-vd","weekly-ratings-report","revision-diaria-cohorts"] },
   { icon:"🛠️", color:"#FFF8E8", name:"cowork-plugin-management", origin:"Anthropic",
-    desc:"Herramientas para crear plugins nuevos desde cero y customizar los existentes para adaptarlos a los flujos de trabajo de Coderhouse.",
-    skills:["create-cowork-plugin","cowork-plugin-customizer"] },
+    desc:"Herramientas para crear y personalizar plugins, programar tareas automáticas y configurar Cowork desde cero.",
+    skills:["create-cowork-plugin","cowork-plugin-customizer","skill-creator","schedule","setup-cowork"] },
 ];
 
 const mcps = [
