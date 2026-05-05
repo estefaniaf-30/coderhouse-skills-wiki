@@ -822,4 +822,110 @@ function buildCard(s) {
         <div>
           <div class="card-name">${s.name} ${skillName}</div>
           <div class="badges">${originBadge}${catBadge}</div>
+        </div>
+      </div>
+      <div class="card-desc">${s.desc}</div>
+      <div class="section-label">Frases que la activan</div>
+      <div class="triggers">${triggers}</div>
+      ${cmd}
+    </div>`;
+}
+
+const grid = document.getElementById('grid');
+grid.innerHTML = skills.map(buildCard).join('');
+document.getElementById('totalBadge').textContent = `${skills.length} skills`;
+
+// ── BUILD PLUGINS ─────────────────────────────────────────────
+const pluginGrid = document.getElementById('pluginGrid');
+pluginGrid.innerHTML = plugins.map(p => `
+  <div class="plugin-card">
+    <div class="plugin-header">
+      <div class="plugin-icon" style="background:${p.color}">${p.icon}</div>
+      <div>
+        <div class="plugin-name">${p.name}</div>
+        <div class="plugin-origin">por ${p.origin}</div>
+      </div>
+    </div>
+    <div class="plugin-desc">${p.desc}</div>
+    <div class="plugin-skills-label">Skills incluidas</div>
+    <div class="plugin-skills">${p.skills.map(s=>`<span class="skill-pill">${s}</span>`).join('')}</div>
+  </div>`).join('');
+
+// ── BUILD MCPs Y PLUGINS DISPONIBLES ─────────────────────────
+const itemStyle = `display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f5f5f5;`;
+const lastItemStyle = `display:flex;align-items:flex-start;gap:10px;margin-bottom:0;`;
+
+document.getElementById('mcpList').innerHTML = mcps.map((m, i) => `
+  <div style="${i === mcps.length-1 ? lastItemStyle : itemStyle}">
+    <span style="font-size:18px;width:24px;flex-shrink:0;">${m.emoji}</span>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#111;">${m.name}</div>
+      <div style="font-size:12px;color:#777;margin-top:2px;line-height:1.4;">${m.desc}</div>
+    </div>
+  </div>`).join('');
+
+document.getElementById('availablePluginList').innerHTML = availablePlugins.map((p, i) => `
+  <div style="${i === availablePlugins.length-1 ? lastItemStyle : itemStyle}">
+    <span style="font-size:18px;width:24px;flex-shrink:0;">${p.emoji}</span>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#111;">${p.name}</div>
+      <div style="font-size:12px;color:#777;margin-top:2px;line-height:1.4;">${p.desc}</div>
+    </div>
+  </div>`).join('');
+
+// ── SEARCH + FILTER ───────────────────────────────────────────
+let activeFilter = 'all';
+let activeOrigin = 'all';
+
+function updateDisplay() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const cards = grid.querySelectorAll('.card');
+  let visible = 0;
+  cards.forEach(card => {
+    const matchCat    = activeFilter === 'all' || card.dataset.cat === activeFilter;
+    const matchOrigin = activeOrigin === 'all' || card.dataset.origin === activeOrigin;
+    const matchSearch = !q || card.dataset.search.includes(q);
+    if (matchCat && matchOrigin && matchSearch) { card.classList.remove('hidden'); visible++; }
+    else card.classList.add('hidden');
+  });
+  const empty = grid.querySelector('.empty-state');
+  if (empty) empty.remove();
+  if (visible === 0) grid.insertAdjacentHTML('beforeend',`<div class="empty-state"><div class="empty-state-icon">🔎</div><div>Sin resultados para "<strong>${q||'filtro actual'}</strong>"</div></div>`);
+  document.getElementById('resultCount').textContent = `${visible} de ${skills.length}`;
+}
+
+document.getElementById('searchInput').addEventListener('input', updateDisplay);
+
+document.getElementById('filterRow').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.cat;
+  updateDisplay();
+});
+
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeOrigin = btn.dataset.origin;
+    updateDisplay();
+  });
+});
+
+// ── NAV TABS ──────────────────────────────────────────────────
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('page-' + tab.dataset.page).classList.add('active');
+  });
+});
+
+updateDisplay();
+</script>
+</body>
+</html>
   
