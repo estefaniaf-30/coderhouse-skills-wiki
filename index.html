@@ -779,8 +779,11 @@ const plugins = [
     desc:"Plugin del equipo de CX. Incluye monitoreo de Intercom, alertas automáticas y análisis de tickets.",
     skills:["alertas-intercom","analisis-cx"] },
   { icon:"⚡", color:"#F5F5FF", name:"anthropic-skills", origin:"Anthropic",
-    desc:"Skills base incluidas por defecto en todo Cowork. Documentos (Word, Excel, PDF, PPT), tareas programadas, setup y todas las skills propias de Coderhouse que no son de un plugin específico.",
-    skills:["docx","pdf","xlsx","pptx","skill-creator","schedule","setup-cowork","cancelaciones","devoluciones-coderhouse","intercom-metricas","intercom-convos","dashboard-academico","retencion-cx","metricas-vd","weekly-ratings-report","revision-diaria-cohorts"] },
+    desc:"Skills base incluidas por defecto en todo Cowork: creación de documentos Word, Excel, PDF y PPT, tareas programadas y configuración inicial.",
+    skills:["docx","pdf","xlsx","pptx","skill-creator","schedule","setup-cowork"] },
+  { icon:"🏠", color:"#E8FFF2", name:"Skills Coderhouse (sueltas)", origin:"Coderhouse",
+    desc:"Skills propias de Coderhouse que no forman parte de un plugin específico. Incluyen los tableros operativos, análisis de devoluciones, métricas de CX y reportes automáticos.",
+    skills:["cancelaciones","devoluciones-coderhouse","intercom-metricas","intercom-convos","dashboard-academico","retencion-cx","metricas-vd","weekly-ratings-report","revision-diaria-cohorts"] },
   { icon:"🛠️", color:"#FFF8E8", name:"cowork-plugin-management", origin:"Anthropic",
     desc:"Herramientas para crear plugins nuevos desde cero y customizar los existentes para adaptarlos a los flujos de trabajo de Coderhouse.",
     skills:["create-cowork-plugin","cowork-plugin-customizer"] },
@@ -918,14 +921,4 @@ document.querySelectorAll('.toggle-btn').forEach(btn => {
 document.querySelectorAll('.nav-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('page-' + tab.dataset.page).classList.add('active');
-  });
-});
-
-updateDisplay();
-</script>
-</body>
-</html>
-      ${cmd}
+    document.qu
