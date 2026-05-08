@@ -303,7 +303,7 @@ body {
   <div class="header-divider"></div>
   <span class="header-sub">Skills & Plugins — Guía del equipo</span>
   <div class="header-right">
-    <span class="last-updated">Actualizado mayo 2026</span>
+    <span class="last-updated">Actualizado 8 mayo 2026</span>
     <span class="header-badge" id="totalBadge">Cargando…</span>
   </div>
 </div>
@@ -630,7 +630,7 @@ Ejemplo: "Ayudame a crear una skill para buscar datos en nuestra BD"</div>
 
 <!-- FOOTER -->
 <div class="footer">
-  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · Mayo 2026 · Para actualizar, pedile a Claude que modifique este diccionario
+  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · 8 Mayo 2026 · Para actualizar, pedile a Claude que modifique este diccionario
 </div>
 
 <script>
@@ -766,6 +766,10 @@ const skills = [
   { origin:"base", cat:"meta", emoji:"🚀", name:"Setup de Cowork", skill:"setup-cowork",
     desc:"Setup guiado para configurar Cowork: instala plugins según tu rol, conecta herramientas y probá las primeras skills.",
     triggers:["setup inicial","configurar Cowork","quiero empezar a usar Cowork","instalar plugins"], cmd:null },
+
+  { origin:"base", cat:"meta", emoji:"🧠", name:"Consolidar Memoria", skill:"anthropic-skills:consolidate-memory",
+    desc:"Revisión reflexiva de los archivos de memoria de Claude: fusiona duplicados, corrige información desactualizada y poda el índice para mantenerlo limpio y preciso.",
+    triggers:["consolidar memoria","limpiar memoria","actualizar contexto de Claude","fusionar duplicados en memoria","organizar memoria"], cmd:null },
 ];
 
 const plugins = [
@@ -917,17 +921,4 @@ document.querySelectorAll('.toggle-btn').forEach(btn => {
   });
 });
 
-// ── NAV TABS ──────────────────────────────────────────────────
-document.querySelectorAll('.nav-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('page-' + tab.dataset.page).classList.add('active');
-  });
-});
-
-updateDisplay();
-</script>
-</body>
-</html>
+// ── NAV TABS ───────────────────────────────────────────�
