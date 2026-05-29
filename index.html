@@ -303,7 +303,7 @@ body {
   <div class="header-divider"></div>
   <span class="header-sub">Skills & Plugins — Guía del equipo</span>
   <div class="header-right">
-    <span class="last-updated">Actualizado 28 mayo 2026</span>
+    <span class="last-updated">Actualizado 29 mayo 2026</span>
     <span class="header-badge" id="totalBadge">Cargando…</span>
   </div>
 </div>
@@ -630,7 +630,7 @@ Ejemplo: "Ayudame a crear una skill para buscar datos en nuestra BD"</div>
 
 <!-- FOOTER -->
 <div class="footer">
-  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · 28 Mayo 2026 · Para actualizar, pedile a Claude que modifique este diccionario
+  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · 29 Mayo 2026 · Para actualizar, pedile a Claude que modifique este diccionario
 </div>
 
 <script>
@@ -659,6 +659,14 @@ const skills = [
   { origin:"coder", cat:"ops", emoji:"⭐", name:"Reporte Semanal de Ratings", skill:"weekly-ratings-report",
     desc:"Genera el reporte semanal de ratings de Coderhouse con análisis por curso, instructor y período.",
     triggers:["reporte semanal de ratings","generate ratings report","weekly ratings","run the ratings report"], cmd:null },
+
+  { origin:"coder", cat:"cx", emoji:"🔄", name:"Retención CX — Studio Chat", skill:"retencion-cx",
+    desc:"Análisis semanal de retención, fricción y conversión para los asistentes de Studio Chat (Preventa y Estudiantes). Compara con la semana anterior.",
+    triggers:["análisis de handoff","reporte de fricción","retención de leads","performance del bot","deflection rate","top motivos de derivación","reporte semanal de bots","cuánto está derivando el bot","cuántos leads convirtieron"], cmd:"retencion-cx" },
+
+  { origin:"coder", cat:"comercial", emoji:"📈", name:"Métricas de Ventas (VD)", skill:"metricas-vd",
+    desc:"Reporte automatizado de métricas del equipo de Ventas: extrae datos de Intercom (Retención de Bot, Volumen, Derivaciones y TMR) y los registra en Google Sheets para seguimiento histórico.",
+    triggers:["métricas de ventas","reporte VD","métricas de ventas directas","registrar métricas en sheets","retención del bot de ventas"], cmd:null },
 
   { origin:"coder", cat:"ops", emoji:"🏫", name:"Gestión de Cohorts", skill:"coderhouse-api:managing-cohorts",
     desc:"CRUD de cohorts, clases, asignación de instructores y tutores, sustituciones, incidentes, feriados y regeneración de Zoom.",
@@ -909,7 +917,7 @@ document.querySelectorAll('.toggle-btn').forEach(btn => {
   });
 });
 
-// ── NAV TABS ───────────────────────────────────────────�// ── NAV TABS ──────────────────────────────────────────────────
+// ── NAV TABS ───────────────────────────────────────────�// ── NAV TABS ──────────────────────────────────────────────────
 document.querySelectorAll('.nav-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
