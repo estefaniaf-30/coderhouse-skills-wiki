@@ -303,7 +303,7 @@ body {
   <div class="header-divider"></div>
   <span class="header-sub">Skills & Plugins — Guía del equipo</span>
   <div class="header-right">
-    <span class="last-updated">Actualizado 29 mayo 2026</span>
+    <span class="last-updated">Actualizado 5 junio 2026</span>
     <span class="header-badge" id="totalBadge">Cargando…</span>
   </div>
 </div>
@@ -630,7 +630,7 @@ Ejemplo: "Ayudame a crear una skill para buscar datos en nuestra BD"</div>
 
 <!-- FOOTER -->
 <div class="footer">
-  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · 29 Mayo 2026 · Para actualizar, pedile a Claude que modifique este diccionario
+  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · 5 Junio 2026 · Para actualizar, pedile a Claude que modifique este diccionario
 </div>
 
 <script>
@@ -772,12 +772,28 @@ const skills = [
   { origin:"base", cat:"meta", emoji:"🧠", name:"Consolidar Memoria", skill:"anthropic-skills:consolidate-memory",
     desc:"Revisión reflexiva de los archivos de memoria de Claude: fusiona duplicados, corrige información desactualizada y poda el índice para mantenerlo limpio y preciso.",
     triggers:["consolidar memoria","limpiar memoria","actualizar contexto de Claude","fusionar duplicados en memoria","organizar memoria"], cmd:null },
+
+  { origin:"coder", cat:"ops", emoji:"🎓", name:"Setup de Diplomaturas", skill:"coderhouse-api:managing-diploma-setup",
+    desc:"Gestión completa del flujo de diplomaturas: crear materias, asociarlas a programas, crear cohorts para materias, estructurar diplomas/módulos/materias y enrolar estudiantes en diplomaturas tras la compra.",
+    triggers:["crear materia","asociar materia a programa","crear cohort de materia","setup de diploma","diplomaturas","enrolar estudiantes en diploma","estructura de diploma"], cmd:null },
+
+  { origin:"coder", cat:"ops", emoji:"📁", name:"Revisión de Folios Delivery", skill:"folio-delivery-review",
+    desc:"Revisa en tiempo real el inbox de Operaciones - Delivery en Intercom. Muestra todos los folios activos (Folio Equipo Delivery y Diplomaturas) con su estado, tipo de solicitud, fecha y link directo a Intercom.",
+    triggers:["revisá los folios","qué folios hay pendientes","estado del inbox delivery","revisión de folios","folio delivery","hay folios nuevos","qué hay en el inbox de delivery","revisá intercom delivery"], cmd:"folio-delivery-review" },
+
+  { origin:"coder", cat:"cx", emoji:"📦", name:"Pain Point — Entregas", skill:"pain-point-entregas",
+    desc:"Genera el reporte PDF del pain point 'Error en Entregas y Correcciones' del Bot Estudiantes de Studio Chat. Clasifica todos los handoffs del período por intención real del usuario y produce un PDF con branding oficial Coderhouse.",
+    triggers:["reporte de entregas","pain point de entregas","reporte entregas y correcciones","cómo vienen las entregas","pain point del bot"], cmd:null },
+
+  { origin:"base", cat:"meta", emoji:"🔬", name:"Deep Research", skill:"deep-research",
+    desc:"Investigación profunda con múltiples búsquedas web en paralelo, verificación adversarial de fuentes y síntesis de un reporte citado. Ideal para temas complejos que requieren fact-checking riguroso.",
+    triggers:["investigá en profundidad","hacé un research de","investigación con fuentes","reporte detallado con citas","deep research"], cmd:"deep-research" },
 ];
 
 const plugins = [
   { icon:"🏫", color:"#E8FFF2", name:"coderhouse-api", origin:"Coderhouse",
     desc:"Plugin oficial de Coderhouse. Conecta con la API interna para gestionar estudiantes, cohorts, pagos, catálogo, membresías, organizaciones y certificados.",
-    skills:["managing-student","managing-cohorts","managing-payments","managing-catalog","managing-memberships","managing-organizations","managing-certificates"] },
+    skills:["managing-student","managing-cohorts","managing-payments","managing-catalog","managing-memberships","managing-organizations","managing-certificates","managing-diploma-setup"] },
   { icon:"🤖", color:"#FFF0F5", name:"studiochat", origin:"Coderhouse",
     desc:"Plugin para administrar los asistentes de Studio Chat: configuración, análisis de datos, testing y reportes automatizados.",
     skills:["builder","data-expert","quality-engineer","report-builder"] },
@@ -786,7 +802,7 @@ const plugins = [
     skills:["docx","pdf","xlsx","pptx"] },
   { icon:"🏠", color:"#E8FFF2", name:"Skills Coderhouse (sueltas)", origin:"Coderhouse",
     desc:"Skills propias de Coderhouse que no forman parte de un plugin específico. Incluyen los tableros operativos, análisis de devoluciones, métricas de CX y reportes automáticos.",
-    skills:["cancelaciones","devoluciones-coderhouse","intercom-metricas","intercom-convos","dashboard-academico","retencion-cx","metricas-vd","weekly-ratings-report","revision-diaria-cohorts"] },
+    skills:["cancelaciones","devoluciones-coderhouse","intercom-metricas","intercom-convos","dashboard-academico","retencion-cx","metricas-vd","weekly-ratings-report","revision-diaria-cohorts","folio-delivery-review","pain-point-entregas"] },
   { icon:"🛠️", color:"#FFF8E8", name:"cowork-plugin-management", origin:"Anthropic",
     desc:"Herramientas para crear y personalizar plugins, programar tareas automáticas y configurar Cowork desde cero.",
     skills:["create-cowork-plugin","cowork-plugin-customizer","skill-creator","schedule","setup-cowork"] },
