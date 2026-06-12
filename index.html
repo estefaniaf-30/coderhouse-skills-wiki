@@ -303,7 +303,7 @@ body {
   <div class="header-divider"></div>
   <span class="header-sub">Skills & Plugins — Guía del equipo</span>
   <div class="header-right">
-    <span class="last-updated">Actualizado 5 junio 2026</span>
+    <span class="last-updated">Actualizado 12 junio 2026</span>
     <span class="header-badge" id="totalBadge">Cargando…</span>
   </div>
 </div>
@@ -630,7 +630,7 @@ Ejemplo: "Ayudame a crear una skill para buscar datos en nuestra BD"</div>
 
 <!-- FOOTER -->
 <div class="footer">
-  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · 5 Junio 2026 · Para actualizar, pedile a Claude que modifique este diccionario
+  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · 12 Junio 2026 · Para actualizar, pedile a Claude que modifique este diccionario
 </div>
 
 <script>
@@ -706,6 +706,10 @@ const skills = [
   { origin:"coder", cat:"studio", emoji:"🧪", name:"Studio Chat — Quality Engineer", skill:"studiochat:quality-engineer",
     desc:"Testea el comportamiento del asistente. Crea casos de prueba, corre evaluaciones, analiza resultados y compara versiones.",
     triggers:["testear el asistente","crear QA scenarios","correr evals","assertion pass rate","verificar comportamiento del bot"], cmd:null },
+
+  { origin:"coder", cat:"studio", emoji:"🔁", name:"Studio Chat — Continuous Improvement", skill:"studiochat:continuous-improvement",
+    desc:"Loop proactivo para mejorar el comportamiento de un asistente — agregar o cambiar políticas en instrucciones o casuísticas. Valida cambios sin guardar versión y los envía para aprobación.",
+    triggers:["necesitamos que el asistente haga X","agregá esta política","cambiá el tono","sumá una casuística","mejora del bot"], cmd:null },
 
   { origin:"coder", cat:"studio", emoji:"📧", name:"Studio Chat — Report Builder", skill:"studiochat:report-builder",
     desc:"Crea y configura reportes automáticos en Studio Chat con entrega por Slack.",
@@ -809,6 +813,7 @@ const plugins = [
 ];
 const mcps = [
   { emoji:"🎧", name:"Intercom", desc:"Buscar conversaciones, leer tickets, consultar datos de contactos. Activo." },
+  { emoji:"💬", name:"Slack", desc:"Leer canales, buscar mensajes, enviar mensajes y programar notificaciones. Activo." },
   { emoji:"📓", name:"Notion", desc:"Leer y crear páginas en espacios de Notion. Disponible para conectar." },
   { emoji:"🗂️", name:"Atlassian (Jira/Confluence)", desc:"Gestión de tickets, proyectos y documentación técnica. Disponible para conectar." },
   { emoji:"📊", name:"Google Sheets (directo)", desc:"Lectura y escritura directa en planillas. Disponible para conectar." },
