@@ -303,7 +303,7 @@ body {
   <div class="header-divider"></div>
   <span class="header-sub">Skills & Plugins — Guía del equipo</span>
   <div class="header-right">
-    <span class="last-updated">Actualizado 12 junio 2026</span>
+    <span class="last-updated">Actualizado 19 junio 2026</span>
     <span class="header-badge" id="totalBadge">Cargando…</span>
   </div>
 </div>
@@ -630,7 +630,7 @@ Ejemplo: "Ayudame a crear una skill para buscar datos en nuestra BD"</div>
 
 <!-- FOOTER -->
 <div class="footer">
-  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · 12 Junio 2026 · Para actualizar, pedile a Claude que modifique este diccionario
+  Equipo <strong>Coderhouse</strong> · Skills & Plugins v1.0 · 19 Junio 2026 · Para actualizar, pedile a Claude que modifique este diccionario
 </div>
 
 <script>
@@ -792,6 +792,15 @@ const skills = [
   { origin:"base", cat:"meta", emoji:"🔬", name:"Deep Research", skill:"deep-research",
     desc:"Investigación profunda con múltiples búsquedas web en paralelo, verificación adversarial de fuentes y síntesis de un reporte citado. Ideal para temas complejos que requieren fact-checking riguroso.",
     triggers:["investigá en profundidad","hacé un research de","investigación con fuentes","reporte detallado con citas","deep research"], cmd:"deep-research" },
+
+  // CX / INTERCOM — pruebacxcowork plugin
+  { origin:"coder", cat:"cx", emoji:"🚨", name:"Alertas de Intercom", skill:"pruebacxcowork:alertas-intercom",
+    desc:"Detecta picos de volumen y palabras clave críticas en Intercom y notifica al equipo por Slack. También corre el chequeo diario de las 10am de forma automática.",
+    triggers:["verificar alertas","chequear picos de volumen","hay alguna alerta","monitorear Intercom","revisar si hay algo crítico","enviar alerta a Slack","correr el monitoreo diario","chequear errores críticos"], cmd:null },
+
+  { origin:"coder", cat:"cx", emoji:"🔍", name:"Análisis de CX", skill:"pruebacxcowork:analisis-cx",
+    desc:"Análisis on-demand de conversaciones de Intercom: pain points, volumen, distribución de tags y tendencias de tickets. Genera un informe del estado de salud del soporte.",
+    triggers:["análisis de CX","análisis de Intercom","informe de soporte","estado de salud del soporte","dame un análisis","qué están reportando los usuarios","top pains","voz del usuario","cuáles son los principales problemas","análisis de tickets","métricas de soporte"], cmd:null },
 ];
 
 const plugins = [
@@ -807,6 +816,9 @@ const plugins = [
   { icon:"🏠", color:"#E8FFF2", name:"Skills Coderhouse (sueltas)", origin:"Coderhouse",
     desc:"Skills propias de Coderhouse que no forman parte de un plugin específico. Incluyen los tableros operativos, análisis de devoluciones, métricas de CX y reportes automáticos.",
     skills:["cancelaciones","devoluciones-coderhouse","intercom-metricas","intercom-convos","dashboard-academico","retencion-cx","metricas-vd","weekly-ratings-report","revision-diaria-cohorts","folio-delivery-review","pain-point-entregas"] },
+  { icon:"🚨", color:"#FFF5F5", name:"pruebacxcowork", origin:"Coderhouse",
+    desc:"Plugin de CX de Coderhouse con skills para monitoreo de alertas en Intercom (picos de volumen, errores críticos) y análisis on-demand del estado de salud del soporte.",
+    skills:["alertas-intercom","analisis-cx"] },
   { icon:"🛠️", color:"#FFF8E8", name:"cowork-plugin-management", origin:"Anthropic",
     desc:"Herramientas para crear y personalizar plugins, programar tareas automáticas y configurar Cowork desde cero.",
     skills:["create-cowork-plugin","cowork-plugin-customizer","skill-creator","schedule","setup-cowork"] },
